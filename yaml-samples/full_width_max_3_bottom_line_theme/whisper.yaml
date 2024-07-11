@@ -1,0 +1,1263 @@
+# Whisper YAML config template 1.0.0
+# Optional YAML file to set Whisper configurations (automatically called once per app lifecycle on first Whisper use).
+# To use, copy this file to your module's assets resource folder (example: YourProject\app\src\main\assets\whisper.yaml).
+# Update this file with your desired configurations.
+# Any option you do not wish to change can be left untouched or removed from the YAML file.
+
+
+# The pixel density to use for all Whisper UI configuration fields (other than font size).
+# Options: DP, PX | Default: DP
+pixelDensityUnit: DP
+
+# Location on screen where to display Whispers. Multiple Whispers visible at once will be positioned relative to this location in the order defined by [sortOrder]. Further adjustments can be made with [Offset.x], [Offset.y], and [Offset.additionalOffsetForStatusBar].
+# Options: TOP_CENTER, TOP_LEFT, TOP_RIGHT, TOP_START, TOP_END, TOP_FULL | Default: TOP_LEFT
+positionOnScreen: TOP_FULL
+
+# Relative position to display newer Whispers when more than one are visible on screen at once. See [positionOnScreen] for Whisper placement.
+# Options: ABOVE, BELOW | Default: BELOW
+sortOrder: BELOW
+
+# Maximum number of Whispers visible on screen at once. If more Whispers exist than the defined value, excess Whispers will be invisible until the space is available.
+# Data Type: Integer. 0 for no maximum. | Default: 3
+maxVisible: 3
+
+# Space between each Whisper if multiple are displaying at once.
+# Data Type: Integer. Must be 0 or greater. | Default: 12
+displaySpace: 0
+
+# In milliseconds, the added auto-timeout length per character in the Whisper message. Value here in combination of text length determines the dynamic auto-timeout of each Whisper. Range will always be within [durationDisplayMinimum] and [durationDisplayMaximum] values. Auto-timeout will not be used for individual Whispers with an optional timeout value passed in.
+# Data Type: Long. Must be greater than 0. | Default: 75
+timeoutLengthPerCharacter: 75
+
+# In milliseconds, the minimum duration a Whisper will be visible for before timing out. Applies if [timeoutLengthPerCharacter] value computes too short of a duration for auto-timeouts. Applies to individual Whispers with an optional timeout value passed in.
+# Data Type: Long. Must be 0 or greater. | Default: 2200
+durationDisplayMinimum: 2200
+
+# In milliseconds, the maximum duration a Whisper will be visible for before timing out. Applies if [timeoutLengthPerCharacter] value computes too long of a duration for auto-timeouts. Does not apply to individual Whispers with an optional timeout value passed in.
+# Data Type: Long. Must be 0 or greater. | Default: 22000
+durationDisplayMaximum: 22000
+
+# In milliseconds, the value of all animation transitions. This includes fading in, fading out, and rearranging.
+# Data Type: Long. 0 for no animation. | Default: 400
+animationTransitionDuration: 400
+
+# When a timeout applies to a Whisper, timer is only activated to the oldest visible Whisper. Once the oldest Whisper is dismissed, the next visible Whisper's timer (set for an auto-close timeout) will begin. False will start a timer for each visible Whisper immediately (except for Whispers set to never timeout).
+# Options: true, false | Default: true
+timeoutOnlyForOldestWhisper: true
+
+# Ability to dismiss a Whisper immediately by tapping it.
+# Options: true, false | Default: true
+tapToDismiss: true
+
+Offset:
+  # Adds an X offset to [positionOnScreen].
+  # Data Type: Integer. Must be 0 or greater. | Default: 12
+  x: 0
+
+  # Adds a Y offset to [positionOnScreen].
+  # Data Type: Integer. Must be 0 or greater. | Default: 12
+  y: 0
+
+  # If the device's status bar is visible, applying a small [Offset.y] may appear to have no effect on the offset (if the [positionOnScreen] is intended to be below the status bar). By setting true, the device's status bar height is calculated and added to the [Offset.y] so it is properly accounted for.
+  # Options: true, false | Default: true
+  additionalOffsetForStatusBar: true
+
+# Default Whisper Profile.
+DefaultProfile:
+  # Sound settings for the Default profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Default profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Default profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Default profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Default profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Default profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "27906E"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Default profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "CAF2E5"
+
+    # Whisper shadow configurations for Default profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Info Whisper Profile.
+InfoProfile:
+  # Sound settings for the Info profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Info profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Info profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Info profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Info profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Info profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "075787"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Info profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "7FBBDF"
+
+    # Whisper shadow configurations for Info profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Warn Whisper Profile.
+WarnProfile:
+  # Sound settings for the Warn profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Warn profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Warn profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Warn profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Warn profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Warn profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "AE310A"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Warn profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "FFAD93"
+
+    # Whisper shadow configurations for Warn profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Error Whisper Profile.
+ErrorProfile:
+  # Sound settings for the Error profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Error profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Error profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Error profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Error profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Error profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "930919"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Error profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "F8919D"
+
+    # Whisper shadow configurations for Error profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Fatal Whisper Profile.
+FatalProfile:
+  # Sound settings for the Fatal profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Fatal profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Fatal profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Fatal profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Fatal profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Fatal profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "5C0027"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Fatal profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "CF3978"
+
+    # Whisper shadow configurations for Fatal profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Critical Whisper Profile.
+CriticalProfile:
+  # Sound settings for the Critical profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Critical profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Critical profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Critical profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Critical profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Critical profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "2F2074"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Critical profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "B0A6DB"
+
+    # Whisper shadow configurations for Critical profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Trace Whisper Profile.
+TraceProfile:
+  # Sound settings for the Trace profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Trace profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Trace profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Trace profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Trace profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Trace profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "BE6B1A"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Trace profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "BE6B1A"
+
+    # Whisper shadow configurations for Trace profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
+
+# Debug Whisper Profile.
+DebugProfile:
+  # Sound settings for the Debug profile.
+  Sound:
+    # When and what sound should play (if ever). If setting CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER, see [Sound.customSound] to use a custom sound.
+    # Options: NEVER, DEVICE_SOLE_WHISPER, DEVICE_EVERY_WHISPER, CUSTOM_SOLE_WHISPER, CUSTOM_EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # Only used if [Sound.trigger] is CUSTOM_SOLE_WHISPER or CUSTOM_EVERY_WHISPER to play the externally added sound. Sound file must be in module's res/raw directory. Value here should be the sound file name without the extension.
+    # Data Type: String (nullable). Example: src/main/res/raw/horn.mp3 -> "horn" | Default: null
+    customSound: null
+
+  # Vibrate settings for the Debug profile.
+  Vibrate:
+    # When to vibrate (if ever). If setting anything other than NEVER, see [Vibrate.vibrationPattern] to define a custom vibration pattern.
+    # REQUIRED: The vibrate permission must be added in your module's manifest using Whisper for vibration to work. <uses-permission android:name="android.permission.VIBRATE"/>
+    # Options: NEVER, SOLE_WHISPER, EVERY_WHISPER | Default: NEVER
+    trigger: NEVER
+
+    # In milliseconds, vibration sequence of off/on/off/on... pattern if [VibrateTemplate.trigger] is not NEVER.
+    # Data Type: Array of Longs | Default: 0, 100, 50, 100
+    vibrationPattern:
+      - 0    # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+      - 50   # delay before vibrating in milliseconds
+      - 100  # vibrate duration in milliseconds
+    # - Continue pattern if desired.
+
+  # UI Design for the Debug profile.
+  Design:
+    # Padding between Whisper edges (left, top, right, bottom) and text. This will make the overall Whisper size larger.
+    # Data Type: Integer | Default for each side: 8, 8, 8, 8
+    Padding:
+      left: 9
+      top: 9
+      right: 9
+      bottom: 9
+
+    # Whisper text and font configurations for Debug profile.
+    Text:
+      # Whisper text color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "FEFEFE"
+      color: "FEFEFE"
+
+      # Whisper text size.
+      # Data Type: Float | Default: 20.0
+      size: 24.0
+
+      # Sets the horizontal alignment of a Whisper's text.
+      # Options: LEFT, RIGHT, CENTER, START, END
+      gravity: CENTER
+
+      # Whisper text font configurations for Debug profile.
+      Font:
+        # If text should be bolded.
+        # Options: true, false | Default: false
+        bold: false
+
+        # If text should be italicized.
+        # Options: true, false | Default: false
+        italic: false
+
+        # If text should be underlined.
+        # Options: true, false | Default: false
+        underline: false
+
+        # .ttf or .otf fonts found in module's /assets/ can be used as the font family. Value here should be the font name with the extension (with the same casing as the file name).
+        # Data Type: String (nullable). Example: src/main/assets/Miracode.ttf -> "Miracode.ttf" | Default: null
+        fontFamily: null
+
+    # Whisper background color configurations for Debug profile.
+    Background:
+      # If background is a solid color or a type of gradient. If SOLID, [Background.colors] will only use the first color in the list to fill the background. All gradient specific configuration fields in [Background] will also be ignored if [SOLID].
+      # Options: SOLID, GRADIENT_LINEAR, GRADIENT_RADIAL, GRADIENT_SWEEP | Default: SOLID
+      type: SOLID
+
+      # Only if Background type is SOLID, Only first color is used as the background color. Otherwise multiple colors can be used for gradient background types.
+      # Options: Values must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB" | Default: "BB66C2A5"
+      colors:
+        - "51A044"
+      # - Add additional colors if Background type is a gradient.
+
+      # Sets the angle of the gradient. Only used if [Background.type] is not SOLID.
+      # Options: TOP_BOTTOM, RIGHT_LEFT, BOTTOM_TOP, LEFT_RIGHT, TOPRIGHT_BOTTOMLEFT, BOTTOMRIGHT_TOPLEFT, BOTTOMLEFT_TOPRIGHT, TOPLEFT_BOTTOMRIGHT
+      gradientOrientation: TOP_BOTTOM
+
+      # The X position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterX: 0.5
+
+      # The Y position of the center of the gradient. Only used if [Background.type] is GRADIENT_RADIAL or GRADIENT_SWEEP.
+      # Data Type: Float | Default: 0.5
+      gradientCenterY: 0.5
+
+      # Sets the radius of the gradient. Only used if [Background.type] is GRADIENT_RADIAL.
+      # Data Type: Float | Default: 120
+      gradientRadius: 120
+
+    # Whisper border configurations for Debug profile.
+    Border:
+      # Whisper corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Border width (size).
+      # Data Type: Integer. 0 for no border. | Default: 4
+      size: 0
+
+      # Border color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "CAF2E5"
+      color: "51A044"
+
+    # Whisper shadow configurations for Debug profile.
+    Shadow:
+      # Display a shadow for each Whisper. If true enables all fields in Shadow (otherwise they are all ignored).
+      # Options: true, false | Default: true
+      castShadow: true
+
+      # Shadow color.
+      # Options: Value must be a 6 or 8 character color hex code as "RRGGBB" or "AARRGGBB". | Default: "88676767"
+      color: "FEFEFE"
+
+      # Shadow corner radius (corner roundness for topLeft, topRight, bottomRight, bottomLeft).
+      # Data Type: Integer | Default for each corner: 8, 8, 8, 8
+      CornerRadius:
+        topLeft: 0
+        topRight: 0
+        bottomRight: 0
+        bottomLeft: 0
+
+      # Shadow insets (left, top, right, bottom). Shadow effect is achieved when Inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 8, 8, 0, 0
+      Inset:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+
+      # Shadow padding (left, top, right, bottom). Shadow effect is achieved when inset is used in combination with [Shadow.padding].
+      # Data Type: Integer | Default for each side: 0, 0, 8, 8
+      Padding:
+        left: 0
+        top: 0
+        right: 0
+        bottom: 2
